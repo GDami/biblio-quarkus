@@ -1,7 +1,7 @@
-package bibili.model;
+package biblio.model;
 
 import java.util.List;
-import bibili.view.Views;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

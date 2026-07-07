@@ -3,6 +3,8 @@ package biblio.api;
 import java.util.List;
 import java.util.Map;
 
+import biblio.dto.request.CreateOrUpdateLivreRequest;
+import biblio.dto.response.LivreResponse;
 import biblio.model.Livre;
 import biblio.repo.LivreRepository;
 import jakarta.inject.Inject;
@@ -25,10 +27,9 @@ public class LivreResource {
     @GET
     public List<LivreResponse> findAll() {
         return repo.findAll()
-            .stream()
-            .map(LivreResponse::convert)
-            .toList()
-        ;
+                .stream()
+                .map(LivreResponse::convert)
+                .toList();
     }
 
     @GET
@@ -49,36 +50,33 @@ public class LivreResource {
         livre.setAnnee(request.annee());
         livre.setCollection(request.collection());
         livre.setAuteur(request.auteur());
-        livre.setEditeur(request.nationalite());
-        livre.setAvis(request.nationalite());
-        
+        livre.setEditeur(request.editeur());
+
         repo.persist(livre);
-        
+
         return Response.status(Response.Status.CREATED)
-        .entity(Map.of("id", livre.getId()))
-        .build()
-        ;
+                .entity(Map.of("id", livre.getId()))
+                .build();
     }
-    
+
     @PUT
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Integer id, CreateOrUpdateLivreRequest request) {
         Livre livre = repo.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        
+
         livre.setTitre(request.titre());
         livre.setResume(request.resume());
         livre.setAnnee(request.annee());
         livre.setCollection(request.collection());
         livre.setAuteur(request.auteur());
-        livre.setEditeur(request.nationalite());
-        livre.setAvis(request.nationalite());
-        
+        livre.setEditeur(request.editeur());
+
         repo.persist(livre);
-        
+
         return Response.ok(Map.of("id", livre.getId())).build();
     }
-    
+
     @DELETE
     @Path("/{id}")
     @Transactional

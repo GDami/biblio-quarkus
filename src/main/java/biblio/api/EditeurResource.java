@@ -3,6 +3,8 @@ package biblio.api;
 import java.util.List;
 import java.util.Map;
 
+import biblio.dto.request.CreateOrUpdateEditeurRequest;
+import biblio.dto.response.EditeurResponse;
 import biblio.model.Editeur;
 import biblio.repo.EditeurRepository;
 import jakarta.inject.Inject;

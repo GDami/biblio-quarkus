@@ -15,6 +15,8 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
+import biblio.dto.request.CreateOrUpdateAuteurRequest;
+import biblio.dto.response.AuteurResponse;
 
 @Path("/api/auteur")
 public class AuteurResource {
@@ -25,10 +27,9 @@ public class AuteurResource {
     @GET
     public List<AuteurResponse> findAll() {
         return repo.findAll()
-            .stream()
-            .map(AuteurResponse::convert)
-            .toList()
-        ;
+                .stream()
+                .map(AuteurResponse::convert)
+                .toList();
     }
 
     @GET
@@ -47,30 +48,29 @@ public class AuteurResource {
         auteur.setNom(request.nom());
         auteur.setPrenom(request.prenom());
         auteur.setNationalite(request.nationalite());
-        
+
         repo.persist(auteur);
-        
+
         return Response.status(Response.Status.CREATED)
-            .entity(Map.of("id", auteur.getId()))
-            .build()
-        ;
+                .entity(Map.of("id", auteur.getId()))
+                .build();
     }
-    
+
     @PUT
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Integer id, CreateOrUpdateAuteurRequest request) {
         Auteur auteur = repo.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        
+
         auteur.setNom(request.nom());
         auteur.setPrenom(request.prenom());
         auteur.setNationalite(request.nationalite());
-        
+
         repo.persist(auteur);
-        
+
         return Response.ok(Map.of("id", auteur.getId())).build();
     }
-    
+
     @DELETE
     @Path("/{id}")
     @Transactional

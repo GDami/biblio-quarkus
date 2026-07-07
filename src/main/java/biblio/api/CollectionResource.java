@@ -3,6 +3,8 @@ package biblio.api;
 import java.util.List;
 import java.util.Map;
 
+import biblio.dto.request.CreateOrUpdateCollectionRequest;
+import biblio.dto.response.CollectionResponse;
 import biblio.model.Collection;
 import biblio.repo.CollectionRepository;
 import jakarta.inject.Inject;
@@ -25,10 +27,9 @@ public class CollectionResource {
     @GET
     public List<CollectionResponse> findAll() {
         return repo.findAll()
-            .stream()
-            .map(CollectionResponse::convert)
-            .toList()
-        ;
+                .stream()
+                .map(CollectionResponse::convert)
+                .toList();
     }
 
     @GET
@@ -45,28 +46,27 @@ public class CollectionResource {
         Collection collection = new Collection();
 
         collection.setNom(request.nom());
-        
+
         repo.persist(collection);
-        
+
         return Response.status(Response.Status.CREATED)
-            .entity(Map.of("id", collection.getId()))
-            .build()
-        ;
+                .entity(Map.of("id", collection.getId()))
+                .build();
     }
-    
+
     @PUT
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Integer id, CreateOrUpdateCollectionRequest request) {
         Collection collection = repo.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        
+
         collection.setNom(request.nom());
-        
+
         repo.persist(collection);
-        
+
         return Response.ok(Map.of("id", collection.getId())).build();
     }
-    
+
     @DELETE
     @Path("/{id}")
     @Transactional

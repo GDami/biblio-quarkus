@@ -1,14 +1,13 @@
 package biblio.dto.response;
 
-import biblio.model.Auteur;
-import biblio.model.Collection;
-import biblio.model.Editeur;
+import java.time.LocalDate;
+
 import biblio.model.Livre;
 
-public record LivreResponse(int id, String titre, String resume, int annee, Editeur editeur, Auteur auteur,
-        Collection collection) {
+public record LivreResponse(int id, String nom, String resume, LocalDate publication, String editeurNom, String auteurNom,
+        String collectionNom) {
     public static LivreResponse convert(Livre livre) {
-        return new LivreResponse(livre.getId(), livre.getTitre(), livre.getResume(), livre.getAnnee(),
-                livre.getEditeur(), livre.getAuteur(), livre.getCollection());
+        return new LivreResponse(livre.getId(), livre.getNom(), livre.getResume(), livre.getPublication(),
+                livre.getEditeur().getNom(), livre.getAuteur().getNom(), livre.getCollection().getNom());
     }
 }

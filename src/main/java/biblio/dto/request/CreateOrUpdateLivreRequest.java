@@ -1,11 +1,10 @@
 package biblio.dto.request;
 
-import biblio.model.Auteur;
-import biblio.model.Collection;
-import biblio.model.Editeur;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotBlank;
 
-public record CreateOrUpdateLivreRequest(@NotBlank String titre, @NotBlank String resume, @NotBlank int annee,
-        @NotBlank Editeur editeur, @NotBlank Auteur auteur, @NotBlank Collection collection) {
+public record CreateOrUpdateLivreRequest(@NotBlank String nom, @NotBlank String resume, @NotBlank LocalDate publication,
+        @NotBlank Integer editeurId, @NotBlank Integer auteurId, @NotBlank Integer collectionId) {
 
 }

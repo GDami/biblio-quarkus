@@ -24,7 +24,7 @@ public class AuthResource {
     @POST
     public AuthResponse auth(AuthRequest request) {
         UsernamePasswordAuthenticationRequest authRequest = new UsernamePasswordAuthenticationRequest(
-                request.login(), // Le nom d'utilisateur
+                request.username(), // Le nom d'utilisateur
                 new PasswordCredential(request.password().toCharArray()) // Le mot de passe
         );
 
@@ -34,7 +34,7 @@ public class AuthResource {
         // Si tout est OK, on peut générer le jeton
         String jwt = Jwt
                 .issuer("biblio-quarkus")
-                .upn(request.login()) // User Principal Name ==> le nom d'utilisateur
+                .upn(request.username()) // User Principal Name ==> le nom d'utilisateur
                 .groups(securityIdentity.getRoles()) // Liste des rôles de l'utilisateur connecté, avec @Roles et
                                                      // @UserDefinition
                 .sign() // Signer le jeton JWT

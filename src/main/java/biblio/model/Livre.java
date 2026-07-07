@@ -1,5 +1,6 @@
 package biblio.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -20,13 +21,13 @@ public class Livre {
     private Integer id;
     
     @Column(length=100, nullable=false)
-    private String titre;
+    private String nom;
     
-    @Column(length=2000, nullable=false)
+    @Column(length=2000)
     private String resume;
-    
-    @Column(nullable=false)
-    private int annee;
+
+    @Column(nullable = false)
+    private LocalDate publication;
 
     @ManyToOne
     @JoinColumn(name="editeur", nullable=false)
@@ -48,9 +49,9 @@ public class Livre {
     public Livre(Integer id, String titre, String resume, int annee, Editeur editeur, Auteur auteur,
             Collection collection) {
         this.id = id;
-        this.titre = titre;
+        this.nom = titre;
         this.resume = resume;
-        this.annee = annee;
+        this.publication = publication;
         this.editeur = editeur;
         this.auteur = auteur;
         this.collection = collection;
@@ -62,23 +63,23 @@ public class Livre {
         return id;
     }
 
-    public Livre(Integer id, String titre, String resume, int annee) {
+    public Livre(Integer id, String titre, String resume, LocalDate publication) {
         this.id = id;
-        this.titre = titre;
+        this.nom = titre;
         this.resume = resume;
-        this.annee = annee;
+        this.publication = publication;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getNom() {
+        return nom;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setNom(String titre) {
+        this.nom = titre;
     }
 
     public String getResume() {
@@ -89,12 +90,12 @@ public class Livre {
         this.resume = resume;
     }
 
-    public int getAnnee() {
-        return annee;
+    public LocalDate getPublication() {
+        return publication;
     }
 
-    public void setAnnee(int annee) {
-        this.annee = annee;
+    public void setPublication(LocalDate publication) {
+        this.publication = publication;
     }
 
     public Editeur getEditeur() {

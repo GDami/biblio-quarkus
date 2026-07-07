@@ -1,12 +1,15 @@
 package biblio.api;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import biblio.dto.request.CreateOrUpdateAvisRequest;
 import biblio.dto.response.AvisResponse;
 import biblio.model.Avis;
+import biblio.model.Livre;
 import biblio.repo.AvisRepository;
+import biblio.repo.LivreRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
@@ -23,6 +26,9 @@ public class AvisResource {
 
     @Inject
     private AvisRepository repo;
+
+    @Inject
+    private LivreRepository livreRepo;
 
     @GET
     public List<AvisResponse> findAll() {
@@ -45,10 +51,13 @@ public class AvisResource {
     public Response create(CreateOrUpdateAvisRequest request) {
         Avis avis = new Avis();
 
+        Livre livre = livreRepo.findByIdOptional(request.livreId()).orElseThrow(NotFoundException::new);
+
         avis.setNote(request.note());
         avis.setCommentaire(request.commentaire());
         avis.setDateAvis(request.dateAvis());
-        avis.setLivre(request.livre());
+        avis.setLivre(livre);
+        avis.setDateAvis(LocalDate.now());
 
         repo.persist(avis);
 
@@ -63,10 +72,13 @@ public class AvisResource {
     public Response update(@PathParam("id") Integer id, CreateOrUpdateAvisRequest request) {
         Avis avis = repo.findByIdOptional(id).orElseThrow(NotFoundException::new);
 
+        Livre livre = livreRepo.findByIdOptional(request.livreId()).orElseThrow(NotFoundException::new);
+
         avis.setNote(request.note());
         avis.setCommentaire(request.commentaire());
         avis.setDateAvis(request.dateAvis());
-        avis.setLivre(request.livre());
+        avis.setLivre(livre);
+        avis.setDateAvis(LocalDate.now());
 
         repo.persist(avis);
 

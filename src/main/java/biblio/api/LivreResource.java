@@ -5,7 +5,13 @@ import java.util.Map;
 
 import biblio.dto.request.CreateOrUpdateLivreRequest;
 import biblio.dto.response.LivreResponse;
+import biblio.model.Auteur;
+import biblio.model.Collection;
+import biblio.model.Editeur;
 import biblio.model.Livre;
+import biblio.repo.AuteurRepository;
+import biblio.repo.CollectionRepository;
+import biblio.repo.EditeurRepository;
 import biblio.repo.LivreRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -23,6 +29,15 @@ public class LivreResource {
 
     @Inject
     private LivreRepository repo;
+
+    @Inject
+    private AuteurRepository auteurRepo;
+
+    @Inject
+    private EditeurRepository editeurRepo;
+
+    @Inject
+    private CollectionRepository collectionRepo;
 
     @GET
     public List<LivreResponse> findAll() {
@@ -45,12 +60,16 @@ public class LivreResource {
     public Response create(CreateOrUpdateLivreRequest request) {
         Livre livre = new Livre();
 
-        livre.setTitre(request.titre());
+        Auteur auteur = auteurRepo.findByIdOptional(request.auteurId()).orElseThrow(NotFoundException::new);
+        Editeur editeur = editeurRepo.findByIdOptional(request.editeurId()).orElseThrow(NotFoundException::new);
+        Collection collection = collectionRepo.findByIdOptional(request.collectionId()).orElseThrow(NotFoundException::new);
+
+        livre.setNom(request.nom());
         livre.setResume(request.resume());
-        livre.setAnnee(request.annee());
-        livre.setCollection(request.collection());
-        livre.setAuteur(request.auteur());
-        livre.setEditeur(request.editeur());
+        livre.setPublication(request.publication());
+        livre.setCollection(collection);
+        livre.setAuteur(auteur);
+        livre.setEditeur(editeur);
 
         repo.persist(livre);
 
@@ -65,12 +84,16 @@ public class LivreResource {
     public Response update(@PathParam("id") Integer id, CreateOrUpdateLivreRequest request) {
         Livre livre = repo.findByIdOptional(id).orElseThrow(NotFoundException::new);
 
-        livre.setTitre(request.titre());
+        Auteur auteur = auteurRepo.findByIdOptional(request.auteurId()).orElseThrow(NotFoundException::new);
+        Editeur editeur = editeurRepo.findByIdOptional(request.editeurId()).orElseThrow(NotFoundException::new);
+        Collection collection = collectionRepo.findByIdOptional(request.collectionId()).orElseThrow(NotFoundException::new);
+
+        livre.setNom(request.nom());
         livre.setResume(request.resume());
-        livre.setAnnee(request.annee());
-        livre.setCollection(request.collection());
-        livre.setAuteur(request.auteur());
-        livre.setEditeur(request.editeur());
+        livre.setPublication(request.publication());
+        livre.setCollection(collection);
+        livre.setAuteur(auteur);
+        livre.setEditeur(editeur);
 
         repo.persist(livre);
 
